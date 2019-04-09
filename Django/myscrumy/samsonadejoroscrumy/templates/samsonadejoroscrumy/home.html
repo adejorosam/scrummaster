@@ -1,0 +1,101 @@
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+a{
+margin-top: 20px;
+text-decoration: none;
+}
+a:hover{
+color: blue;
+}
+form{
+   padding-top: 20px;
+   }
+</style>
+<!doctype html>
+<html>
+<head><title> Homepage </title></head>
+<body>
+<h2> Welcome back:  {{ current_user }} -- {{ group }}  </h2>
+<table>
+    <colgroup span="5"></colgroup>
+    <tr>
+        <th>User</th>
+        <th colspan="1">Weekly Goals</th>
+        <th colspan="1">Daily Target</th>
+        <th colspan="1">Verify Goals</th>
+        <th colspan="1">Done Goals</th>
+
+    </tr>
+
+    {% if user %}
+    {% for username in user %}
+    <tr>
+        <td rowspan="1">
+            <p> {{username}}</p>
+
+        </td>
+        {% if weekly_goal %}
+            <td rowspan="1">
+                {%for goals in weekly_goal %}
+                    {% if goals.user == username %}
+                <p> <i>Goal ID:</i> {{goals.goal_id}} &nbsp; &nbsp; <i>Goal Name:</i> <a href="{% url 'samsonadejoroscrumy:movegoal' goal_id=goals.goal_id %}" > {{goals.goal_name}} </a>
+                    {% endif %}
+                {% endfor %}
+
+            </td>
+        {% else %}
+        <td>There is No Goal</td>
+        {% endif %}
+
+        {% if daily_goal %}
+            <td rowspan="1">
+                {% for goals in daily_goal %}
+                    {% if goals.user == username %}
+
+                <p> <i>Goal ID:</i> {{goals.goal_id}} &nbsp; &nbsp; <i>Goal Name:</i> <a href="{% url 'samsonadejoroscrumy:movegoal' goal_id=goals.goal_id %}" >  {{goals.goal_name}} </a></p>
+                    {% endif %}
+                {% endfor %}
+
+            </td>
+        {% else %}
+        <td>There is No Goal</td>
+        {% endif %}
+
+        {% if verify_goal %}
+            <td rowspan="1">
+                {% for goals in verify_goal %}
+
+                    {% if goals.user == username %}
+                <p> <i>Goal ID:</i> {{goals.goal_id}} &nbsp; &nbsp; <i>Goal Name:</i> <a href="{% url 'samsonadejoroscrumy:movegoal' goal_id=goals.goal_id %}" > {{goals.goal_name}} </a> </p>
+                    {% endif %}
+                {% endfor %}
+
+            </td>
+        {% else %}
+        <td>There is No Goal</td>
+        {% endif %}
+
+        {% if done_goal %}
+            <td rowspan="1">
+                {% for goals in done_goal %}
+                    {% if goals.user == username %}
+                <p> <i>Goal ID:</i> {{goals.goal_id}} &nbsp; &nbsp; <i>Goal Name:</i>  <a href="{% url 'samsonadejoroscrumy:movegoal' goal_id=goals.goal_id %}" >  {{goals.goal_name}} </a></p>
+                    {% endif %}
+                {% endfor %}
+            </td>
+        {% else %}
+        <td>There is No Goal</td>
+        {% endif %}
+
+    </tr>
+    {% endfor %}
+    {% endif %}
+
+</table>
+
+<a href="{% url 'samsonadejoroscrumy:add_goal' %}"> <h2> Add Goals Here </h2> </a>
+<a href="{% url 'samsonadejoroscrumy:index' %}"  target="_blank"> <h2>Sign up here</h2> </a>
+</body>
+</html>
